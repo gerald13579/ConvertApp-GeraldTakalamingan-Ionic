@@ -1,20 +1,52 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>Metric Converter</ion-title>
+    <div style="padding-left: 20px; font-size: 12px; color: white;">
+      By: Gerald Takalamingan
+    </div>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <h2>Konversi {{ conversionType === 'length' ? 'Panjang' : (conversionType === 'mass' ? 'Massa' : 'Waktu') }}</h2>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <!-- Pilihan metrik -->
+  <ion-item>
+    <ion-label position="floating">Pilih Metrik</ion-label>
+    <ion-select [(ngModel)]="conversionType" (ionChange)="onMetricChange()">
+      <ion-select-option value="length">Panjang</ion-select-option>
+      <ion-select-option value="mass">Massa</ion-select-option>
+      <ion-select-option value="time">Waktu</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Pilihan satuan dari -->
+  <ion-item>
+    <ion-label position="floating">Dari</ion-label>
+    <ion-select [(ngModel)]="fromUnit" [disabled]="!fromUnitOptions.length">
+      <ion-select-option *ngFor="let unit of fromUnitOptions" [value]="unit">{{ unit }}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Pilihan satuan ke -->
+  <ion-item>
+    <ion-label position="floating">Ke</ion-label>
+    <ion-select [(ngModel)]="toUnit" [disabled]="!toUnitOptions.length">
+      <ion-select-option *ngFor="let unit of toUnitOptions" [value]="unit">{{ unit }}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Input nilai -->
+  <ion-item>
+    <ion-label position="floating">Masukkan Nilai</ion-label>
+    <ion-input [(ngModel)]="inputValue" (ionInput)="validateInput()" type="text"></ion-input>
+  </ion-item>
+
+  <!-- Peringatan jika input tidak valid -->
+  <ion-text color="danger" *ngIf="inputError">{{ inputError }}</ion-text>
+
+  <!-- Hasil konversi -->
+  <ion-item *ngIf="result !== null">
+    <ion-label>Result: {{ result }} {{ toUnit }}</ion-label>
+  </ion-item>
 </ion-content>
