@@ -1,0 +1,7 @@
+{
+  "name": "ConvApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
